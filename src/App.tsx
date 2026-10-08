@@ -27,6 +27,22 @@ export const App = () => {
       <>
         <h1 className="title">Tabs page</h1>
 
+        <div className="tabs is-boxed">
+          <ul>
+            {tabs.map(tabу => {
+              return (
+                <li
+                  data-cy="Tab"
+                  key={tabу.id}
+                  className={`${location.pathname === `/tabs/${tabу.id}` ? ' is-active' : ''}`}
+                >
+                  <Link to={`/tabs/${tabу.id}`}>{tabу.title}</Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
         <div className="block" data-cy="TabContent">
           {tab ? tab.content : 'Please select a tab'}
         </div>
@@ -73,22 +89,6 @@ export const App = () => {
               element={<h1 className="title">Page not found</h1>}
             />
           </Routes>
-
-          <div className="tabs is-boxed">
-            <ul>
-              {tabs.map(tab => {
-                return (
-                  <li
-                    data-cy="Tab"
-                    key={tab.id}
-                    className={`${location.pathname === `/tabs/${tab.id}` ? ' is-active' : ''}`}
-                  >
-                    <Link to={`/tabs/${tab.id}`}>{tab.title}</Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
         </div>
       </div>
     </>
