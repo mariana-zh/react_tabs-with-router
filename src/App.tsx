@@ -1,54 +1,12 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import './App.scss';
-import {
-  Route,
-  Routes,
-  Navigate,
-  Link,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
-
-const tabs = [
-  { id: 'tab-1', title: 'Tab 1', content: 'Some text 1' },
-  { id: 'tab-2', title: 'Tab 2', content: 'Some text 2' },
-  { id: 'tab-3', title: 'Tab 3', content: 'Some text 3' },
-];
+import { Route, Routes, Navigate, Link, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import { TabsPage } from './pages/TabsPage';
 
 export const App = () => {
-  const location = useLocation();
-
-  const PageTab = () => {
-    const { tabId } = useParams();
-    const tab = tabs.find(tabe => tabe.id === tabId);
-
-    return (
-      <>
-        <h1 className="title">Tabs page</h1>
-
-        <div className="tabs is-boxed">
-          <ul>
-            {tabs.map(tabу => {
-              return (
-                <li
-                  data-cy="Tab"
-                  key={tabу.id}
-                  className={`${location.pathname === `/tabs/${tabу.id}` ? ' is-active' : ''}`}
-                >
-                  <Link to={`/tabs/${tabу.id}`}>{tabу.title}</Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <div className="block" data-cy="TabContent">
-          {tab ? tab.content : 'Please select a tab'}
-        </div>
-      </>
-    );
-  };
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -61,13 +19,17 @@ export const App = () => {
           <div className="navbar-brand">
             <Link
               to="/"
-              className={`navbar-item ${location.pathname === '/' ? ' is-active' : ''} `}
+              className={classNames('navbar-item', {
+                'is-active': pathname === '/',
+              })}
             >
               Home
             </Link>
             <Link
               to="/tabs"
-              className={`navbar-item ${location.pathname.startsWith('/tabs') ? ' is-active' : ''} `}
+              className={classNames('navbar-item', {
+                'is-active': pathname.startsWith('/tabs'),
+              })}
             >
               Tabs
             </Link>
@@ -81,8 +43,8 @@ export const App = () => {
             <Route path="/home" element={<Navigate to="/" replace />} />
             <Route path="/" element={<h1 className="title">Home page</h1>} />
             <Route path="/tabs">
-              <Route index element={<PageTab />} />
-              <Route path=":tabId" element={<PageTab />} />
+              <Route index element={<TabsPage />} />
+              <Route path=":tabId" element={<TabsPage />} />
             </Route>
             <Route
               path="*"
